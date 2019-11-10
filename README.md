@@ -2,7 +2,7 @@
 Analytics for Aave Decentralized lending protocol
 
 ## App URL
-
+https://aave-analytics.netlify.com
 
 ## Screenshots
 
