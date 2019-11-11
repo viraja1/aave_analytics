@@ -233,11 +233,11 @@ export default class Main extends Component {
                         <li><b>Available Liquidity</b>: {(reserve.availableLiquidity / 1e18).toFixed(3)}</li>
                         <li><b>Total Borrows Fixed</b>: {(reserve.totalBorrowsFixed / 1e18).toFixed(3)}</li>
                         <li><b>Total Borrows Variable</b>: {(reserve.totalBorrowsVariable / 1e18).toFixed(3)}</li>
-                        <li><b>Liquidity Rate</b>: {(reserve.liquidityRate / 1e18).toFixed(3)}</li>
-                        <li><b>Variable Borrow Rate:</b>: {(reserve.variableBorrowRate / 1e18).toFixed(3)}</li>
-                        <li><b>Fixed Borrow Rate</b>: {(reserve.fixedBorrowRate / 1e18).toFixed(3)}</li>
-                        <li><b>Average Fixed Borrow Rate</b>: {(reserve.averageFixedBorrowRate / 1e18).toFixed(3)}</li>
-                        <li><b>Utilization Rate</b>: {(reserve.utilizationRate / 1e18).toFixed(3)}</li>
+                        <li><b>Liquidity Rate</b>: {(reserve.liquidityRate / 1e25).toFixed(3)}</li>
+                        <li><b>Variable Borrow Rate:</b>: {(reserve.variableBorrowRate / 1e25).toFixed(3)}</li>
+                        <li><b>Fixed Borrow Rate</b>: {(reserve.fixedBorrowRate / 1e25).toFixed(3)}</li>
+                        <li><b>Average Fixed Borrow Rate</b>: {(reserve.averageFixedBorrowRate / 1e25).toFixed(3)}</li>
+                        <li><b>Utilization Rate</b>: {(reserve.utilizationRate / 1e25).toFixed(3)}</li>
                       </ul>
                     </Card.Body>
                   </Accordion.Collapse>
