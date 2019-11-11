@@ -15,6 +15,10 @@ https://aave-analytics.netlify.com
 ### aToken Stats
 ![](screenshots/aave_3.png)
 
+### Top 10 Stats
+![](screenshots/aave_4.png)
+
+![](screenshots/aave_5.png)
 
 ## Getting Started
 
