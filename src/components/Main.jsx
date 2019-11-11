@@ -54,7 +54,10 @@ export default class Main extends Component {
       stats: {},
       allTransactions: [],
       users: [],
-      liquidity: []
+      liquidity: [],
+      deposit: [],
+      borrow: [],
+      flashLoans: []
     };
   }
 
@@ -243,8 +246,71 @@ export default class Main extends Component {
             </Accordion>
             <br/>
           </div>
-
           }
+          <br/>
+          <br/>
+          {this.state.deposit.length > 0 &&
+          <div style={{height: "300px", marginBottom: "10px"}} className="transaction-list">
+            <b>Top 10 Deposits</b>
+            <ListGroup style={{height: "100%", overflow: "scroll", marginTop: "10px"}}>
+              {this.state.deposit.map((transaction, i, deposit) => (
+                <ListGroup.Item key={"card-key-" + String(i)} style={{wordWrap: "break-word"}}>
+                  <b>Event</b>: {transaction.event}
+                  <br/>
+                  <b>Timestamp</b>: {this.getHumanReadableDate(transaction.returnValues.timestamp)}
+                  <br/>
+                  <b>Amount</b>: {(transaction.returnValues._amount / 1e18).toFixed(3)} {tokenMapping[transaction.returnValues[0]]}
+                  <br/>
+                  <b>Transaction Hash</b>: <a href={"https://kovan.etherscan.io/tx/" + transaction.transactionHash}
+                                              target="_blank">{transaction.transactionHash}</a>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </div>
+          }
+          <br/>
+          <br/>
+          {this.state.borrow.length > 0 &&
+          <div style={{height: "300px", marginBottom: "10px"}} className="transaction-list">
+            <b>Top 10 Borrows</b>
+            <ListGroup style={{height: "100%", overflow: "scroll", marginTop: "10px"}}>
+              {this.state.borrow.map((transaction, i, borrow) => (
+                <ListGroup.Item key={"card-key-" + String(i)} style={{wordWrap: "break-word"}}>
+                  <b>Event</b>: {transaction.event}
+                  <br/>
+                  <b>Timestamp</b>: {this.getHumanReadableDate(transaction.returnValues.timestamp)}
+                  <br/>
+                  <b>Amount</b>: {(transaction.returnValues._amount / 1e18).toFixed(3)} {tokenMapping[transaction.returnValues[0]]}
+                  <br/>
+                  <b>Transaction Hash</b>: <a href={"https://kovan.etherscan.io/tx/" + transaction.transactionHash}
+                                              target="_blank">{transaction.transactionHash}</a>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </div>
+          }
+          <br/>
+          <br/>
+          {this.state.flashLoans.length > 0 &&
+          <div style={{height: "300px", marginBottom: "10px"}} className="transaction-list">
+            <b>Top 10 Flash Loans</b>
+            <ListGroup style={{height: "100%", overflow: "scroll", marginTop: "10px"}}>
+              {this.state.flashLoans.map((transaction, i, flashLoans) => (
+                <ListGroup.Item key={"card-key-" + String(i)} style={{wordWrap: "break-word"}}>
+                  <b>Event</b>: {transaction.event}
+                  <br/>
+                  <b>Timestamp</b>: {this.getHumanReadableDate(transaction.returnValues.timestamp)}
+                  <br/>
+                  <b>Amount</b>: {(transaction.returnValues._amount / 1e18).toFixed(3)} {tokenMapping[transaction.returnValues[0]]}
+                  <br/>
+                  <b>Transaction Hash</b>: <a href={"https://kovan.etherscan.io/tx/" + transaction.transactionHash}
+                                              target="_blank">{transaction.transactionHash}</a>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
+          </div>
+          }
+
         </div>
       </div>
     );
@@ -256,19 +322,43 @@ export default class Main extends Component {
     //console.log(all_transactions);
     let mapping = {};
     let users = [];
+    let deposit = [];
+    let borrow = [];
+    let flashLoans = [];
     for (var i = 0; i < all_transactions.length; i++) {
       if (mapping[all_transactions[i].event]) {
         mapping[all_transactions[i].event] += 1
       } else {
         mapping[all_transactions[i].event] = 1
       }
+      if(all_transactions[i].event === 'Deposit'){
+        deposit.push(all_transactions[i]);
+      }
+      else if(all_transactions[i].event === 'Borrow'){
+        borrow.push(all_transactions[i]);
+      }
+      else if(all_transactions[i].event === 'FlashLoan'){
+        flashLoans.push(all_transactions[i]);
+      }
       users.push(all_transactions[i].returnValues._user);
     }
+    deposit = deposit.sort(function(first, second) {
+      return second.returnValues._amount - first.returnValues._amount;
+    }).slice(0, 10);
+    borrow = borrow.sort(function(first, second) {
+      return second.returnValues._amount - first.returnValues._amount;
+    }).slice(0, 10);
+    flashLoans = flashLoans.sort(function(first, second) {
+      return second.returnValues._amount - first.returnValues._amount;
+    }).slice(0, 10);
     users = [...new Set(users)];
     this.setState({
       stats: mapping,
       allTransactions: all_transactions.reverse(),
-      users: users
+      users: users,
+      deposit: deposit,
+      borrow: borrow,
+      flashLoans: flashLoans
     });
     this.setState({inProgress: false});
     //console.log(mapping);
